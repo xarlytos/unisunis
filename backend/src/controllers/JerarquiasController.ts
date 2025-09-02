@@ -20,7 +20,7 @@ export class JerarquiasController {
 
       // Si es comercial, solo puede ver sus propias jerarquías
       if (req.user?.rol === 'comercial') {
-        filter.usuarioSuperior = req.user._id;
+        filter.usuarioSuperior = req.user.userId; // Cambiado de req.user._id
       }
 
       const jerarquias = await JerarquiaUsuarios.find(filter)
@@ -66,7 +66,7 @@ export class JerarquiasController {
 
       // Verificar permisos
       if (req.user?.rol === 'comercial' && 
-          jerarquia.usuarioSuperior._id.toString() !== req.user._id.toString()) {
+          jerarquia.usuarioSuperior._id.toString() !== req.user.userId.toString()) { // Cambiado de req.user._id
         return res.status(403).json({ 
           error: 'No tienes permisos para ver esta jerarquía' 
         });
