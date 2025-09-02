@@ -103,7 +103,7 @@ export class DatabaseUtils {
       }
       
       return stats;
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Error getting database stats:', error);
       return {};
     }

@@ -1,6 +1,21 @@
 import { Request, Response, NextFunction } from 'express';
 import { validationResult, ValidationChain } from 'express-validator';
 
+// Función helper para ejecutar validaciones
+export const validate = (validations: ValidationChain[]) => {
+  return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    // Ejecutar todas las validaciones
+    for (const validation of validations) {
+      const result = await validation.run(req);
+      if (!result.isEmpty()) {
+        break;
+      }
+    }
+    
+    next();
+  };
+};
+
 // Middleware para manejar errores de validación
 export const handleValidationErrors = (
   req: Request,
@@ -22,19 +37,4 @@ export const handleValidationErrors = (
   }
   
   next();
-};
-
-// Función helper para ejecutar validaciones
-export const validate = (validations: ValidationChain[]) => {
-  return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    // Ejecutar todas las validaciones
-    for (const validation of validations) {
-      const result = await validation.run(req);
-      if (!result.isEmpty()) {
-        break;
-      }
-    }
-    
-    next();
-  };
 };
