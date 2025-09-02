@@ -34,7 +34,7 @@ router.delete('/:id',
   JerarquiasController.eliminarJerarquia
 );
 
-// Get subordinados and jefe routes
+// Rutas para obtener jefe y subordinados
 router.get('/jefe/:subordinadoId', 
   requirePermission('gestionar_jerarquias'),
   JerarquiasController.obtenerJefe

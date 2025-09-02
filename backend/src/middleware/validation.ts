@@ -29,10 +29,12 @@ export const validate = (validations: ValidationChain[]) => {
   return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     // Ejecutar todas las validaciones
     for (const validation of validations) {
-      await validation.run(req);
+      const result = await validation.run(req);
+      if (!result.isEmpty()) {
+        break;
+      }
     }
     
-    // Verificar errores
-    handleValidationErrors(req, res, next);
+    next();
   };
 };
