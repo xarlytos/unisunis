@@ -5,10 +5,10 @@ import { requirePermission } from '../middleware/authorization';
 
 const router = Router();
 
-// Todas las rutas requieren autenticación
+// Aplicar autenticación a todas las rutas
 router.use(authenticateToken);
 
-// CRUD de jerarquías
+// Rutas principales
 router.get('/', 
   requirePermission('gestionar_jerarquias'),
   JerarquiasController.obtenerJerarquias
@@ -34,15 +34,15 @@ router.delete('/:id',
   JerarquiasController.eliminarJerarquia
 );
 
-// Gestión de subordinados
-router.post('/:id/subordinados', 
+// Get subordinados and jefe routes
+router.get('/jefe/:subordinadoId', 
   requirePermission('gestionar_jerarquias'),
-  JerarquiasController.agregarSubordinado
+  JerarquiasController.obtenerJefe
 );
 
-router.delete('/:id/subordinados/:usuarioId', 
+router.get('/subordinados/:jefeId', 
   requirePermission('gestionar_jerarquias'),
-  JerarquiasController.removerSubordinado
+  JerarquiasController.obtenerSubordinados
 );
 
 export default router;
